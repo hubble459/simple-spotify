@@ -1,0 +1,38 @@
+{
+  "name": "simple-spotify",
+  "version": "0.0.1",
+  "description": "A simple spotify api for fetching songs and playlists",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*",
+    "docs/**/*"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
+    "test": "jest --config jestconfig.json"
+  },
+  "bugs": {
+    "url": "https://github.com/hubble459/simple-spotify/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hubble459/simple-spotify"
+  },
+  "homepage": "https://github.com/hubble459/simple-spotify#readme",
+  "keywords": [
+    "spotify",
+    "simple spotify",
+    "api",
+    "spotify api"
+  ],
+  "author": "Hubble34",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^26.0.23",
+    "jest": "^27.0.4",
+    "ts-jest": "^27.0.3",
+    "typescript": "^4.3.2"
+  }
+}
