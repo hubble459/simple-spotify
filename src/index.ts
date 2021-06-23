@@ -173,6 +173,10 @@ export interface SpotifyPlaylist {
  * Spotify API for Node.js
  */
 export class Spotify {
+    public readonly playlistRegex = /^https:\/\/open\.spotify\.com\/playlist\/.+$/;
+    public readonly albumRegex = /^https:\/\/open\.spotify\.com\/album\/.+$/;
+    public readonly trackRegex = /^https:\/\/open\.spotify\.com\/track\/.+$/;
+    public readonly artistRegex = /^https:\/\/open\.spotify\.com\/artist\/.+$/;
     // Spotify ID regex
     private readonly idRegex = /^[\d\w]+$/i;
     // Fetch a new token when the old one expires (default: true)
@@ -216,7 +220,7 @@ export class Spotify {
      * @param urlOrId Playlist url or id
      */
     public async playlist(urlOrId: string, all: boolean = true) {
-        const id = this.getId(urlOrId, 'https://open.spotify.com/playlist/');
+        const id = this.getId(urlOrId, this.playlistRegex);
 
         await this.ensureToken();
         let url: string | null = this.playlistUrl + id;
@@ -236,7 +240,7 @@ export class Spotify {
      * @param urlOrId Album url or id
      */
     public async album(urlOrId: string) {
-        const id = this.getId(urlOrId, 'https://open.spotify.com/album/');
+        const id = this.getId(urlOrId, this.albumRegex);
 
         await this.ensureToken();
         const album = <SpotifyAlbum>await this.fetch(this.albumUrl + id);
@@ -260,7 +264,7 @@ export class Spotify {
     * @param urlOrId Track url or id
     */
     public async track(urlOrId: string) {
-        const id = this.getId(urlOrId, 'https://open.spotify.com/track');
+        const id = this.getId(urlOrId, this.trackRegex);
 
         await this.ensureToken();
         return <SpotifyTrack>await this.fetch(this.trackUrl + id);
@@ -272,7 +276,7 @@ export class Spotify {
     * @param urlOrId Artist url or id
     */
     public async artist(urlOrId: string) {
-        const id = this.getId(urlOrId, 'https://open.spotify.com/artist');
+        const id = this.getId(urlOrId, this.artistRegex);
 
         await this.ensureToken();
         const artist = <SpotifyArtist>await this.fetch(this.artistUrl + id);
@@ -326,9 +330,9 @@ export class Spotify {
         }
     }
 
-    private getId(urlOrId: string, startsWith: string) {
+    private getId(urlOrId: string, regex: RegExp) {
         let id: string;
-        if (urlOrId && urlOrId.startsWith(startsWith)) {
+        if (urlOrId && regex.test(urlOrId)) {
             if (urlOrId.endsWith('/')) urlOrId = urlOrId.slice(0, urlOrId.length - 1);
             const urlQ = urlOrId.indexOf('?');
             id = urlOrId.substring(urlOrId.lastIndexOf('/') + 1, urlQ === -1 ? undefined : urlQ);
