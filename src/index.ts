@@ -244,8 +244,13 @@ export class Spotify {
 
         await this.ensureToken();
         const album = <SpotifyAlbum>await this.fetch(this.albumUrl + id);
-        album.tracks = async (all: boolean = true) => {
-            let url: string | null = this.albumUrl + id + '/tracks?limit=50';
+        album.tracks = this.trackGetter(id);
+        return album;
+    }
+
+    private trackGetter(albumId: string) {
+        return async (all: boolean = true) => {
+            let url: string | null = this.albumUrl + albumId + '/tracks?limit=50';
             const trackList: SpotifyTrack[] = [];
             let tracks = <SpotifyAlbumTracks>await this.fetch(url);
             trackList.push(...tracks.items);
@@ -255,7 +260,6 @@ export class Spotify {
             }
             return trackList;
         }
-        return album;
     }
 
     /**
@@ -288,6 +292,10 @@ export class Spotify {
                 albums = await this.fetch(url);
                 albumList.push(...albums.items);
             } while (all && (url = albums.next));
+            albumList.map((album) => {
+                album.tracks = this.trackGetter(album.id);
+                return album;
+            })
             return albumList;
         }
         return artist;
