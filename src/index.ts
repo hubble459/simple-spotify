@@ -127,7 +127,7 @@ export interface SpotifyPlaylistTracks {
             is_local: boolean;
             primary_color: string | null;
             sharing_info: SpotifySharingInfo
-            track: SpotifyTrack;
+            track: SpotifyTrack | null;
             video_thumbnail: {
                 url: string | null;
             };
@@ -226,9 +226,9 @@ export class Spotify {
         let url: string | null = this.playlistUrl + id;
         const playlist = <SpotifyPlaylist>await this.fetch(url);
         while (all && (url = playlist.tracks.next)) {
-            const newPage = <SpotifyPlaylist>await this.fetch(url);
-            playlist.tracks.next = newPage.tracks.next;
-            playlist.tracks.items.push(...newPage.tracks.items);
+            const newPage = <SpotifyPlaylistTracks>await this.fetch(url);
+            playlist.tracks.next = newPage.next;
+            playlist.tracks.items.push(...newPage.items);
         }
 
         return playlist;

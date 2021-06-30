@@ -8,6 +8,8 @@ describe('spotify', () => {
         await expect(spotify.playlist('https://google.com/')).rejects.toThrow('Not a Spotify url or id');
         await expect(spotify.playlist('')).rejects.toThrow('Not a Spotify url or id');
         await expect(spotify.playlist('https://open.spotify.com/album/0jDXcSgqZXQBIogbvRtkpj?si=1g_LzVanQKywqUdNG0NZhg&dl_branch=1')).rejects.toThrow('Not a Spotify url or id');
+        const playlist = await spotify.playlist('https://open.spotify.com/playlist/74sUjcvpGfdOvCHvgzNEDO?si=588e636edbae4abf');
+        expect(playlist).toBeTruthy();        
     });
 
     test('#album', async () => {
