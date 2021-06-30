@@ -1,6 +1,6 @@
 {
   "name": "simple-spotify",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A simple spotify api for fetching songs and playlists",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
